@@ -1,4 +1,4 @@
-package com.example.orderservice;
+package com.example.orderservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,7 +16,7 @@ public class Order {
     private Long id;
     
     private String customerType;
-    private Double total;
+    private double total;
     private String status;
     
     @ElementCollection
