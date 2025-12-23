@@ -2,6 +2,7 @@ package com.example.orderservice.controller;
 
 import com.example.orderservice.dto.OrderRequestDTO;
 import com.example.orderservice.dto.OrderResponseDTO;
+import com.example.orderservice.dto.PopularProductDTO;
 import com.example.orderservice.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,11 @@ public class OrderController {
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderResponseDTO> updateStatus(@PathVariable Long id, @RequestBody OrderRequestDTO request) throws Exception {
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/analytics/popular")
+    public ResponseEntity<List<PopularProductDTO>> getPopularProducts() {
+        return ResponseEntity.ok(os.getPopularProducts());
     }
 
     //--------------------------------

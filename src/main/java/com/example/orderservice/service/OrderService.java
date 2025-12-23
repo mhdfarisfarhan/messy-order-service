@@ -8,6 +8,11 @@ import com.example.orderservice.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @Transactional
 public class OrderService {
@@ -59,5 +64,30 @@ public class OrderService {
         Order order = or.findById(orderId).orElseThrow(() -> new Exception("Order not found"));
         order.setStatus(orderStatus.toString());
         or.save(order);
+    }
+
+    public List<PopularProductDTO> getPopularProducts() {
+        List<Order> allOrders = or.findAll();
+
+        // Using HashMap to count products efficiently
+        Map<Long, Integer> productCounts = new HashMap<>();
+
+        for (Order order : allOrders) {
+            for (String item : order.getItems()) {
+                // Simulating product ID extraction
+                Long productId = Long.parseLong(item.split(":")[0]);
+
+                // Incrementing the count in the HashMap
+                productCounts.put(productId, productCounts.getOrDefault(productId, 0) + 1);
+            }
+        }
+
+        // Converting the HashMap to a List of PopularProductDTO
+        List<PopularProductDTO> popularProducts = new ArrayList<>();
+        for (Map.Entry<Long, Integer> entry : productCounts.entrySet()) {
+            popularProducts.add(new PopularProductDTO(entry.getKey(), entry.getValue()));
+        }
+
+        return popularProducts;
     }
 }
